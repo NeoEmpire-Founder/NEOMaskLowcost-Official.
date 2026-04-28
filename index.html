@@ -5,47 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NEOMask Lowcost | Official</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #0d1117; color: white; text-align: center; padding: 20px; }
-        .container { max-width: 500px; margin: 50px auto; border: 1px solid #30363d; padding: 30px; border-radius: 20px; background: #161b22; }
-        .logo { max-width: 200px; margin-bottom: 20px; }
-        h1 { color: #58a6ff; font-size: 2rem; }
-        .badge { background: #238636; color: white; padding: 10px 20px; border-radius: 50px; font-weight: bold; display: inline-block; margin: 20px 0; }
-        .cta-button { background-color: #2ea44f; color: white; padding: 15px 30px; font-size: 1.2rem; border: none; border-radius: 10px; cursor: pointer; width: 100%; font-weight: bold; }
-        .cta-button:hover { background-color: #3fb950; }
-        #status { margin-top: 20px; color: #8b949e; font-size: 0.9rem; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #0d1117; color: white; text-align: center; padding: 50px; }
+        .container { max-width: 500px; margin: auto; border: 1px solid #30363d; padding: 30px; border-radius: 20px; background: #161b22; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .logo { max-width: 120px; margin-bottom: 20px; }
+        h1 { color: #58a6ff; font-size: 1.8rem; margin-bottom: 10px; }
+        .badge { background: #238636; color: white; padding: 8px 15px; border-radius: 50px; font-weight: bold; font-size: 0.9rem; display: inline-block; margin-bottom: 20px; }
+        .info-box { background: #0d1117; padding: 15px; border-radius: 10px; margin: 20px 0; border: 1px dashed #30363d; }
+        button { background-color: #2ea44f; color: white; padding: 15px 30px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; font-size: 1rem; width: 100%; transition: 0.3s; }
+        button:hover { background-color: #3fb950; transform: translateY(-2px); }
+        #status { margin-top: 20px; color: #8b949e; font-size: 0.9rem; word-break: break-all; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <img src="logo.png.png" alt="NEOMask Logo" class="logo">
-        <h1>NEOMask Lowcost</h1>
-        <div class="badge">$0.02 LIFETIME FEE</div>
-        <p>A carteira mais barata do mundo.<br>Simples para todos. Segura para todos.</p>
-        
-        <button class="cta-button" id="connectButton">CONNECT WALLET</button>
-        
-        <p id="status">Status: Aguardando ligação...</p>
+
+<div class="container">
+    <img src="logo.png.png" alt="NEOMask Logo" class="logo">
+    <h1>NEOMask Lowcost</h1>
+    <div class="badge">TAXA FIXA: $0.02 USD</div>
+    
+    <p>A carteira mais barata e simples da rede. Segurança total para os seus ativos.</p>
+
+    <div class="info-box">
+        <span id="accountDisplay">Nenhuma carteira ligada</span>
     </div>
 
-    <script>
-        const ownerAddress = "0x2FE2EceC9C671a90923e4BF44200116Bb1F9C3BB";
-        
-        document.getElementById('connectButton').addEventListener('click', async () => {
-            if (window.ethereum) {
-                try {
-                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    const userAccount = accounts[0];
-                    document.getElementById('status').innerText = "Ligado: " + userAccount.substring(0,6) + "...";
-                    document.getElementById('connectButton').innerText = "WALLET CONNECTED";
-                    document.getElementById('connectButton').style.backgroundColor = "#21262d";
-                    alert("Sucesso! A NEOMask reconheceu a sua carteira. Taxas de $0.02 ativadas para si.");
-                } catch (err) {
-                    document.getElementById('status').innerText = "Erro na ligação.";
-                }
-            } else {
-                alert("Por favor, instale a MetaMask no seu navegador para usar a NEOMask.");
+    <button id="connectButton">LIGAR NEOMASK</button>
+    
+    <p id="status">Pronto para iniciar transações seguras.</p>
+</div>
+
+<script>
+    const connectButton = document.getElementById('connectButton');
+    const accountDisplay = document.getElementById('accountDisplay');
+    const status = document.getElementById('status');
+
+    connectButton.addEventListener('click', async () => {
+        if (typeof window.ethereum !== 'undefined') {
+            try {
+                status.innerText = "A ligar à rede segura...";
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                const account = accounts[0];
+                
+                accountDisplay.innerHTML = "<strong>Ligado:</strong> " + account.substring(0,6) + "..." + account.substring(38);
+                connectButton.innerText = "CARTEIRA ATIVA";
+                connectButton.style.backgroundColor = "#238636";
+                status.innerText = "Sucesso! Taxas de $0.02 ativadas para esta sessão.";
+                
+                alert("NEOMask Ativa! Agora pode navegar com taxas Low Cost.");
+            } catch (error) {
+                status.innerText = "Erro ao ligar. Tente novamente.";
             }
-        });
-    </script>
+        } else {
+            alert("Por favor, instale a MetaMask para usar a NEOMask.");
+        }
+    });
+</script>
+
 </body>
 </html>
